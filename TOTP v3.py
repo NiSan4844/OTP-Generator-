@@ -92,7 +92,7 @@ totp = pyotp.TOTP(secret)
 
 # Step 4: Generate a TOTP and send it via email
 current_otp = totp.now()
-email_subject = "Your TOTP Code"
+email_subject = "OTP code"
 email_body = f"Your OTP code is: {current_otp}"
 send_email(email_subject, email_body, RECIPIENT_EMAIL)
 
