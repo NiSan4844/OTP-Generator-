@@ -5,13 +5,17 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from cryptography.fernet import Fernet
+from dotenv import load_dotenv
 
-# Email configuration (use your own credentials)
-SMTP_SERVER = 'smtp.gmail.com'  # For Gmail, use smtp.gmail.com
-SMTP_PORT = 587  # Standard port for TLS
-SENDER_EMAIL = 'your_email@gmail.com'  # Replace with your email
-SENDER_PASSWORD = 'your_password'  # Replace with your email password
-RECIPIENT_EMAIL = 'recipient_email@gmail.com'  # Replace with recipient's email
+# Load environment variables from .env file
+load_dotenv()
+
+# Email configuration (loaded from environment variables)
+SMTP_SERVER = os.getenv('SMTP_SERVER')
+SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
+SENDER_EMAIL = os.getenv('SENDER_EMAIL')
+SENDER_PASSWORD = os.getenv('SENDER_PASSWORD')
+RECIPIENT_EMAIL = os.getenv('RECIPIENT_EMAIL')
 
 # File paths to store the encrypted secret key and encryption key
 secret_file = "totp_secret.enc"
@@ -92,7 +96,7 @@ totp = pyotp.TOTP(secret)
 
 # Step 4: Generate a TOTP and send it via email
 current_otp = totp.now()
-email_subject = "OTP code"
+email_subject = "Your OTP code"
 email_body = f"Your OTP code is: {current_otp}"
 send_email(email_subject, email_body, RECIPIENT_EMAIL)
 
