@@ -34,9 +34,9 @@ This project implements a Time-based One-Time Password (TOTP) authentication sys
 
 ## Configuration
 
-### Email Configuration
+### Email Configuration and Environment Variables
 
-Update the following variables in the script to match your email server details and credentials:
+For security reasons, sensitive information such as email server details and credentials should be managed using environment variables. Create a .env file in the root directory of the project with the following content:
 
 - `SMTP_SERVER`: The address of the SMTP server (e.g., `smtp.gmail.com`).
 - `SMTP_PORT`: The port used by the SMTP server (e.g., `587` for TLS).
@@ -44,28 +44,9 @@ Update the following variables in the script to match your email server details 
 - `SENDER_PASSWORD`: The application-specific password for the email account.
 - `RECIPIENT_EMAIL`: The email address to which the OTP will be sent.
 
-### Environment Variables
-
-For security reasons, sensitive information such as email server details and credentials should be managed using environment variables. Create a .env file in the root directory of the project with the following content:
-
-- SMTP_SERVER=smtp.gmail.com         # Address of the SMTP server
-- SMTP_PORT=587                      # Port used by the SMTP server
-- SENDER_EMAIL=your_email@gmail.com  # Email address used to send OTPs
-- SENDER_PASSWORD=your_password      # Application-specific password for the email account
-- RECIPIENT_EMAIL=recipient_email@gmail.com  # Email address to which the OTP will be sent
-
 Ensure that the .env file is included in your .gitignore to prevent it from being committed to version control.
 
-The script uses the python-dotenv package to load environment variables from the .env file. Ensure this package is installed, and add the following code to your script to load the variables:
-
-
-load_dotenv()
-
-SMTP_SERVER = os.getenv('SMTP_SERVER')
-SMTP_PORT = int(os.getenv('SMTP_PORT'))
-SENDER_EMAIL = os.getenv('SENDER_EMAIL')
-SENDER_PASSWORD = os.getenv('SENDER_PASSWORD')
-RECIPIENT_EMAIL = os.getenv('RECIPIENT_EMAIL')
+The script uses the python-dotenv package to load environment variables from the .env file.
 
 ## Security Considerations
 
