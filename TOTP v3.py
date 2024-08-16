@@ -7,12 +7,12 @@ from email.mime.multipart import MIMEMultipart
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+
 load_dotenv()
 
 # Email configuration (loaded from environment variables)
 SMTP_SERVER = os.getenv('SMTP_SERVER')
-SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
+SMTP_PORT = int(os.getenv('SMTP_PORT'))
 SENDER_EMAIL = os.getenv('SENDER_EMAIL')
 SENDER_PASSWORD = os.getenv('SENDER_PASSWORD')
 RECIPIENT_EMAIL = os.getenv('RECIPIENT_EMAIL')
@@ -96,7 +96,7 @@ totp = pyotp.TOTP(secret)
 
 # Step 4: Generate a TOTP and send it via email
 current_otp = totp.now()
-email_subject = "Your OTP code"
+email_subject = "OTP code"
 email_body = f"Your OTP code is: {current_otp}"
 send_email(email_subject, email_body, RECIPIENT_EMAIL)
 
