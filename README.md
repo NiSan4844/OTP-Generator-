@@ -54,33 +54,33 @@ Logging is configured to record events and errors to `otp_auth.log`.
 
 ### 6. Functions
 
-#### `generate_encryption_key()`
+- `generate_encryption_key()`
 
 Generates and saves an encryption key for encrypting the TOTP secret.
 
 #### `load_encryption_key()`
 
-Loads the encryption key from a file.
+- Loads the encryption key from a file.
 
 #### `save_encrypted_secret(secret, key)`
 
-Encrypts and saves the TOTP secret using the provided key.
+- Encrypts and saves the TOTP secret using the provided key.
 
 #### `load_encrypted_secret(key)`
 
-Loads and decrypts the TOTP secret using the provided key.
+- Loads and decrypts the TOTP secret using the provided key.
 
 #### `send_email(subject, body, recipient_email)`
 
-Sends an email with the given subject and body to the specified recipient using SMTP.
+- Sends an email with the given subject and body to the specified recipient using SMTP.
 
 #### `is_rate_limited(user_id)`
 
-Checks if the user has exceeded the maximum number of attempts within the rate limit window.
+- Checks if the user has exceeded the maximum number of attempts within the rate limit window.
 
 #### `log_attempt(user_id)`
 
-Logs an attempt with the current timestamp for the given user ID.
+- Logs an attempt with the current timestamp for the given user ID.
 
 ### 7. Main Steps
 
@@ -97,8 +97,3 @@ Logs an attempt with the current timestamp for the given user ID.
 - **Encryption**: The TOTP secret is encrypted before being saved to ensure confidentiality.
 - **Rate Limiting**: Helps to prevent brute-force attacks by limiting the number of attempts.
 - **Logging**: Records significant events and errors for troubleshooting and monitoring.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
