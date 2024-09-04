@@ -1,55 +1,104 @@
-# TOTP Authentication System
+# OTP Authentication System
 
-This project implements a Time-based One-Time Password (TOTP) authentication system using Python. The system handles generating, encrypting, storing, and verifying TOTP and includes functionality to send OTPs via email.
+This project implements a Time-based One-Time Password (TOTP) authentication system. The system generates a TOTP, sends it to the user's email, and then validates the user input against the generated OTP. It includes rate limiting and logging functionalities to enhance security and monitor usage.
 
 ## Features
 
-- **Generate TOTP Secret**: Create a new TOTP secret key.
-- **Encrypt and Store Secret**: Securely encrypt and save the TOTP secret key.
-- **Send OTP via Email**: Send the generated OTP to a user via email.
-- **Verify OTP**: Validate the OTP entered by the user.
+- **TOTP Generation**: Uses the `pyotp` library to generate a time-based OTP.
+- **Email Sending**: Sends OTP via email using SMTP.
+- **Encryption**: Stores and retrieves the TOTP secret key securely.
+- **Rate Limiting**: Limits the number of attempts a user can make within a specified time window.
+- **Logging**: Logs key actions and events for monitoring and debugging.
 
-## Steps Involved
+## Setup
 
-1. **Generate Encryption Key**:
-   - Generate a new encryption key for encrypting the TOTP secret.
-   - Save this key to a file for future use.
+1. **Install Required Libraries**: Ensure you have the required libraries installed. You can install them using pip:
 
-2. **Load Encryption Key**:
-   - Load the encryption key from the saved file if it exists.
-   - Generate a new key if none is found.
+    ```bash
+    pip install pyotp python-dotenv cryptography
+    ```
 
-3. **Generate and Save TOTP Secret**:
-   - Generate a new TOTP secret key if one does not already exist.
-   - Encrypt the secret using the encryption key.
-   - Save the encrypted secret to a file.
+2. **Environment Variables**: Create a `.env` file in the project directory with the following variables:
 
-4. **Send OTP via Email**:
-   - Generate a TOTP based on the secret key.
-   - Send the OTP to the user's email address.
+    ```dotenv
+    SMTP_SERVER=smtp.example.com
+    SMTP_PORT=587
+    SENDER_EMAIL=your_email@example.com
+    SENDER_PASSWORD=your_password
+    RECIPIENT_EMAIL=recipient_email@example.com
+    ```
 
-5. **Validate OTP**:
-   - Prompt the user to enter the OTP received via email.
-   - Verify the entered OTP against the generated one using a tolerance window.
+## Code Overview
 
-## Configuration
+### 1. Load Environment Variables
 
-### Email Configuration and Environment Variables
+The `load_dotenv()` function loads environment variables from the `.env` file.
 
-For security reasons, sensitive information such as email server details and credentials should be managed using environment variables. Create a .env file in the root directory of the project with the following content:
+### 2. Email Configuration
 
-- `SMTP_SERVER`: The address of the SMTP server (e.g., `smtp.gmail.com`).
-- `SMTP_PORT`: The port used by the SMTP server (e.g., `587` for TLS).
-- `SENDER_EMAIL`: The email address used to send OTPs.
-- `SENDER_PASSWORD`: The application-specific password for the email account.
-- `RECIPIENT_EMAIL`: The email address to which the OTP will be sent.
+Email settings are loaded from environment variables and used for sending OTP emails.
 
-Ensure that the .env file is included in your .gitignore to prevent it from being committed to version control.
+### 3. File Paths
 
-The script uses the python-dotenv package to load environment variables from the .env file.
+- `secret_file`: Path to store the encrypted TOTP secret key.
+- `encryption_key_file`: Path to store the encryption key.
+
+### 4. Logging Setup
+
+Logging is configured to record events and errors to `otp_auth.log`.
+
+### 5. Rate Limiting Configuration
+
+- `RATE_LIMIT_WINDOW`: Defines the time window for rate limiting.
+- `MAX_ATTEMPTS`: Maximum number of allowed attempts within the window.
+
+### 6. Functions
+
+#### `generate_encryption_key()`
+
+Generates and saves an encryption key for encrypting the TOTP secret.
+
+#### `load_encryption_key()`
+
+Loads the encryption key from a file.
+
+#### `save_encrypted_secret(secret, key)`
+
+Encrypts and saves the TOTP secret using the provided key.
+
+#### `load_encrypted_secret(key)`
+
+Loads and decrypts the TOTP secret using the provided key.
+
+#### `send_email(subject, body, recipient_email)`
+
+Sends an email with the given subject and body to the specified recipient using SMTP.
+
+#### `is_rate_limited(user_id)`
+
+Checks if the user has exceeded the maximum number of attempts within the rate limit window.
+
+#### `log_attempt(user_id)`
+
+Logs an attempt with the current timestamp for the given user ID.
+
+### 7. Main Steps
+
+1. **Load or Generate Encryption Key**: Checks if an encryption key exists; if not, generates a new one.
+2. **Load or Generate TOTP Secret**: Loads the encrypted TOTP secret or generates a new one if not available.
+3. **Create TOTP Object**: Uses the TOTP secret to create a TOTP object.
+4. **Generate and Send OTP**: Generates the current OTP and sends it via email.
+5. **Simulate Delay**: Waits to simulate user input time.
+6. **User Input**: Prompts the user to enter the received OTP.
+7. **Log Attempt and Validate OTP**: Logs the attempt, checks the rate limit, and validates the OTP.
 
 ## Security Considerations
 
-- **Encryption Key**: Ensure the encryption key is stored securely and not exposed in your code or repository.
-- **Email Credentials**: Use application-specific passwords for email and manage credentials securely.
-- **Time Synchronization**: Ensure that your system clock is accurate to avoid OTP validation issues.
+- **Encryption**: The TOTP secret is encrypted before being saved to ensure confidentiality.
+- **Rate Limiting**: Helps to prevent brute-force attacks by limiting the number of attempts.
+- **Logging**: Records significant events and errors for troubleshooting and monitoring.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
