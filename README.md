@@ -12,11 +12,7 @@ This project implements a Time-based One-Time Password (TOTP) authentication sys
 
 ## Setup
 
-1. **Install Required Libraries**: Ensure you have the required libraries installed. You can install them using pip:
-
-    ```bash
-    pip install pyotp python-dotenv cryptography
-    ```
+1. **Install Required Libraries**: Ensure you have the required libraries installed. You can install them using pip.
 
 2. **Environment Variables**: Create a `.env` file in the project directory with the following variables:
 
@@ -54,9 +50,9 @@ Logging is configured to record events and errors to `otp_auth.log`.
 
 ### 6. Functions
 
-- `generate_encryption_key()`
+#### `generate_encryption_key()`
 
-Generates and saves an encryption key for encrypting the TOTP secret.
+- Generates and saves an encryption key for encrypting the TOTP secret.
 
 #### `load_encryption_key()`
 
