@@ -78,7 +78,7 @@ Logging is configured to record events and errors to `otp_auth.log`.
 
 - Logs an attempt with the current timestamp for the given user ID.
 
-### 7. Main Steps
+## Main Steps
 
 1. **Load or Generate Encryption Key**: Checks if an encryption key exists; if not, generates a new one.
 2. **Load or Generate TOTP Secret**: Loads the encrypted TOTP secret or generates a new one if not available.
